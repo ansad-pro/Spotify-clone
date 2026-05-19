@@ -1,7 +1,3 @@
-// Using Deezer's public CORS-enabled API proxy
-const API = 'https://api.deezer.com';
-const PROXY = 'https://corsproxy.io/?';
-
 const audio = document.getElementById('audio');
 const playBtn = document.getElementById('play-btn');
 const prevBtn = document.getElementById('prev-btn');
@@ -22,11 +18,17 @@ let currentIdx = 0;
 async function searchTracks(query) {
   results.innerHTML = '<p style="color:#b3b3b3;">Loading...</p>';
   try {
-    const res = await fetch(PROXY + encodeURIComponent(`${API}/search?q=${query}&limit=30`));
+    const res = await fetch(`/api/deezer?q=${encodeURIComponent(query)}`);
+    if (!res.ok) throw new Error('Network error');
     const data = await res.json();
+    if (!data.data || data.data.length === 0) {
+      results.innerHTML = '<p style="color:#b3b3b3;">No results found.</p>';
+      return;
+    }
     queue = data.data.filter(t => t.preview);
     renderResults();
   } catch (e) {
+    console.error(e);
     results.innerHTML = '<p style="color:#ff6b6b;">Failed to load. Try again.</p>';
   }
 }
@@ -37,7 +39,7 @@ function renderResults() {
     const card = document.createElement('div');
     card.className = 'card';
     card.innerHTML = `
-      <img src="${track.album.cover_medium}" alt="" />
+      <img src="${track.album.cover_medium}" alt="" loading="lazy" />
       <div class="card-title">${track.title}</div>
       <div class="card-artist">${track.artist.name}</div>
     `;
@@ -56,6 +58,7 @@ function playTrack(idx) {
   npArt.src = t.album.cover_small;
   npTitle.textContent = t.title;
   npArtist.textContent = t.artist.name;
+  document.title = `${t.title} • ${t.artist.name}`;
 }
 
 playBtn.addEventListener('click', () => {
@@ -73,16 +76,20 @@ prevBtn.addEventListener('click', () => {
 
 audio.addEventListener('ended', () => {
   if (currentIdx < queue.length - 1) playTrack(currentIdx + 1);
+  else playBtn.textContent = '▶';
 });
 
 audio.addEventListener('timeupdate', () => {
   if (audio.duration) {
     seek.value = (audio.currentTime / audio.duration) * 100;
     const m = Math.floor(audio.currentTime / 60);
-    const s = Math.floor(audio.currentTime % 60).toString().padStart(2,'0');
+    const s = Math.floor(audio.currentTime % 60).toString().padStart(2, '0');
     curTime.textContent = `${m}:${s}`;
   }
 });
+
+audio.addEventListener('pause', () => { playBtn.textContent = '▶'; });
+audio.addEventListener('play', () => { playBtn.textContent = '⏸'; });
 
 seek.addEventListener('input', () => {
   if (audio.duration) audio.currentTime = (seek.value / 100) * audio.duration;
@@ -98,8 +105,11 @@ searchInput.addEventListener('keydown', (e) => {
 });
 
 document.querySelectorAll('#playlist-list li').forEach(li => {
-  li.addEventListener('click', () => searchTracks(li.dataset.q));
+  li.addEventListener('click', () => {
+    searchInput.value = li.textContent;
+    searchTracks(li.dataset.q);
+  });
 });
 
-// Load default
+// Auto-load default playlist
 searchTracks('malayalam hits');
