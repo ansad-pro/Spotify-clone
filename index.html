@@ -1,69 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Spotifyy - Music for Everyone</title>
-<link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MySpotify</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="app">
     <aside class="sidebar">
-      <div class="logo">
-        <svg viewBox="0 0 24 24" fill="#1db954" width="32"><circle cx="12" cy="12" r="12"/></svg>
-        <span>Spotifyy</span>
-      </div>
+      <h1 class="logo">🎵 MySpotify</h1>
       <nav>
-        <button class="nav-btn active" data-view="home">🏠 Home</button>
-        <button class="nav-btn" data-view="search">🔍 Search</button>
-        <button class="nav-btn" data-view="library">📚 Library</button>
+        <a href="#" class="active">🏠 Home</a>
+        <a href="#">🔍 Search</a>
+        <a href="#">📚 Library</a>
       </nav>
-      <div class="playlists">
-        <h4>PLAYLISTS</h4>
-        <ul id="playlist-list">
-          <li data-q="malayalam hits">Malayalam Hits</li>
-          <li data-q="tamil love">Tamil Love</li>
-          <li data-q="arijit singh">Arijit Singh</li>
-          <li data-q="lofi chill">Lofi Chill</li>
-          <li data-q="english pop">English Pop</li>
-          <li data-q="hindi bollywood">Hindi Bollywood</li>
-        </ul>
-      </div>
     </aside>
 
-    <main class="main-content">
-      <header class="top-bar">
-        <input id="search-input" type="text" placeholder="Search songs, artists..." />
-      </header>
-      <section id="results" class="results-grid"></section>
+    <main class="main">
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Search songs, artists..." />
+        <button id="searchBtn">Search</button>
+      </div>
+
+      <h2 id="sectionTitle">Trending Now</h2>
+      <div class="songs-grid" id="songsGrid">
+        <p class="loading">Loading songs...</p>
+      </div>
     </main>
 
-    <footer class="player-bar">
+    <footer class="player">
       <div class="now-playing">
-        <img id="np-art" src="" alt="" />
+        <img id="nowImg" src="" alt="" />
         <div>
-          <div id="np-title">Select a song</div>
-          <div id="np-artist"></div>
+          <p id="nowTitle">Select a song</p>
+          <p id="nowArtist" class="artist"></p>
         </div>
       </div>
-      <div class="controls">
-        <div class="ctrl-buttons">
-          <button id="prev-btn">⏮</button>
-          <button id="play-btn">▶</button>
-          <button id="next-btn">⏭</button>
-        </div>
-        <div class="progress">
-          <span id="cur-time">0:00</span>
-          <input id="seek" type="range" value="0" min="0" max="100" />
-          <span id="dur-time">0:30</span>
-        </div>
-      </div>
-      <div class="volume">
-        🔊 <input id="vol" type="range" min="0" max="100" value="80" />
-      </div>
-      <audio id="audio" preload="auto"></audio>
+      <audio id="audioPlayer" controls></audio>
     </footer>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
