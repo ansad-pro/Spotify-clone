@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Spotifyy - Music for Everyone</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="preconnect" href="https://api.deezer.com" />
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">
+        <svg viewBox="0 0 24 24" fill="#1db954" width="32"><circle cx="12" cy="12" r="12"/></svg>
+        <span>Spotifyy</span>
+      </div>
+      <nav>
+        <button class="nav-btn active" data-view="home">🏠 Home</button>
+        <button class="nav-btn" data-view="search">🔍 Search</button>
+        <button class="nav-btn" data-view="library">📚 Library</button>
+      </nav>
+      <div class="playlists">
+        <h4>Playlists</h4>
+        <ul id="playlist-list">
+          <li data-q="malayalam hits">Malayalam Hits</li>
+          <li data-q="tamil love">Tamil Love</li>
+          <li data-q="arijit singh">Arijit Singh</li>
+          <li data-q="lofi chill">Lofi Chill</li>
+          <li data-q="english pop">English Pop</li>
+        </ul>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <input id="search-input" type="text" placeholder="Search songs, artists..." />
+      </header>
+      <section id="results" class="results-grid"></section>
+    </main>
+
+    <footer class="player-bar">
+      <div class="now-playing">
+        <img id="np-art" src="" alt="" />
+        <div>
+          <div id="np-title">Select a song</div>
+          <div id="np-artist"></div>
+        </div>
+      </div>
+      <div class="controls">
+        <div class="ctrl-buttons">
+          <button id="prev-btn">⏮</button>
+          <button id="play-btn">▶</button>
+          <button id="next-btn">⏭</button>
+        </div>
+        <div class="progress">
+          <span id="cur-time">0:00</span>
+          <input id="seek" type="range" value="0" min="0" max="100" />
+          <span id="dur-time">0:30</span>
+        </div>
+      </div>
+      <div class="volume">
+        🔊 <input id="vol" type="range" min="0" max="100" value="80" />
+      </div>
+      <audio id="audio" preload="auto"></audio>
+    </footer>
+  </div>
+  <script src="script.js"></script>
+</body>
+  </html>
